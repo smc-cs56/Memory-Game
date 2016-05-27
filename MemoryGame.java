@@ -1,8 +1,13 @@
-import java.awt.*;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
-import javax.swing.*;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.Panel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 public class MemoryGame extends JFrame implements ActionListener {  
 
@@ -22,6 +27,9 @@ public class MemoryGame extends JFrame implements ActionListener {
     private Panel buttonPnl = new Panel();   
     private Panel scorePnl = new Panel();
 
+    // my change
+    private static MemoryGame singletonMemoryGame = null;
+
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = MemoryGame.class.getResource(path);
         if (imgURL != null) {
@@ -32,7 +40,8 @@ public class MemoryGame extends JFrame implements ActionListener {
         }
     }
 
-    public MemoryGame()
+    // my change from public
+    private MemoryGame()
     { 
         createGUI();  
         createpanels();  
@@ -192,8 +201,16 @@ public class MemoryGame extends JFrame implements ActionListener {
             }           
     } 
 
-    public static void main(String[] args)
-    {  
-        new MemoryGame();   
+    public synchronized static MemoryGame getInstance() {
+        if (singletonMemoryGame == null) {
+            singletonMemoryGame = new MemoryGame();
+        }
+
+        return singletonMemoryGame;
     }
+    
+    //public static void main(String[] args)
+    //{  
+      //  new MemoryGame();   
+    //}
 }
