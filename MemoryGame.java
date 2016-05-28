@@ -249,7 +249,7 @@ public class MemoryGame extends JFrame implements ActionListener {
 
                 if (Matched == totalUniqueCards - 1)
                 {
-                    JOptionPane.showMessageDialog(null, "Great job!");
+                    JOptionPane.showMessageDialog(null, "Good job!");
                 }
 
                 counter++;
