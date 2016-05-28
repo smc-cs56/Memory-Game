@@ -24,9 +24,6 @@ public class MemoryGame extends JFrame implements ActionListener {
     private final int totalUniqueCards = 8;
     private JButton[] gameBtn = new JButton[16];
 
-
-    //private ArrayList<Integer> gameList = new ArrayList<Integer>();
-
     private Map<Integer, String> cardList = new HashMap<Integer, String>();
 
     private int Hit, Miss = 0;
@@ -129,8 +126,8 @@ public class MemoryGame extends JFrame implements ActionListener {
 
         exitBtn = new JButton("Exit"); 
         exitBtn.addActionListener(this);
-        //replayBtn = new JButton("Shuffle");  
-        //replayBtn.addActionListener(this);
+        replayBtn = new JButton("Shuffle");  
+        replayBtn.addActionListener(this);
         solveBtn = new JButton("Solve"); 
         solveBtn.addActionListener(this);       
     }    
@@ -143,7 +140,7 @@ public class MemoryGame extends JFrame implements ActionListener {
             gamePnl.add(gameBtn[i]);   
         }
 
-        //buttonPnl.add(replayBtn);
+        buttonPnl.add(replayBtn);
         buttonPnl.add(exitBtn);
         buttonPnl.add(solveBtn);
         buttonPnl.setLayout(new GridLayout(1, 0));
@@ -156,7 +153,7 @@ public class MemoryGame extends JFrame implements ActionListener {
         scorePnl.setLayout(new GridLayout(1, 0));
         window.add(scorePnl, BorderLayout.NORTH);
         window.add(gamePnl, BorderLayout.CENTER);
-        window.add(buttonPnl, BorderLayout.SOUTH);  
+        window.add(buttonPnl, BorderLayout.SOUTH);
     }
 
     public boolean sameValues() 
@@ -194,49 +191,33 @@ public class MemoryGame extends JFrame implements ActionListener {
         {
             System.exit(0);
         }
-        /*else if (e.getSource() == replayBtn)
+        else if (e.getSource() == replayBtn)
         {
-            for (int i = 0; i < gameBtn.length; i++)
-            { 
-                gamePnl.remove(gameBtn[i]);
+            for (int i = 0; i < gameBtn.length; i++) 
+            {
+                gameBtn[i].setIcon(defaultButtonIcon);
+                gameBtn[i].addActionListener(this);
             }
+
+            shuffleCards(totalUniqueCards);
 
             Hit = 0;
             setStatusText(statusText.Hit, Hit);
 
             Miss = 0;
             setStatusText(statusText.Miss, Miss);
-            //scorePnl.remove(HitScore);
-            //scorePnl.remove(MissScore);
-            buttonPnl.remove(exitBtn);
-            buttonPnl.remove(replayBtn);
-            buttonPnl.remove(solveBtn);
-            window.remove(gamePnl);
-            window.remove(scorePnl);
-            window.remove(buttonPnl);
-            window.remove(window);
-            window.add(gamePnl);
-            window.add(scorePnl);
-            window.add(buttonPnl);
-            //scorePnl.add(HitScore);
-            //scorePnl.add(MissScore);
-            buttonPnl.add(exitBtn);
-            buttonPnl.add(replayBtn);
-            buttonPnl.add(solveBtn);
-            for (int i = 0; i < gameBtn.length; i++)
-            { 
-                gamePnl.add(gameBtn[i]);
-            }
+
+
         }
         else if (e.getSource() == solveBtn)
         {
             for (int i = 0; i < gameBtn.length; i++) 
             { 
-                gameBtn[i].setText("" + gameList.get(i));  
-                gameBtn[btnID[0]].setEnabled(false); 
-                gameBtn[btnID[1]].setEnabled(false);
+                ImageIcon CardImage = createImageIcon("assets/images/cards/" + cardList.get(i) + ".png");
+                gameBtn[i].setIcon(CardImage);
+                gameBtn[i].removeActionListener(this);
             }
-        }*/
+        }
 
         for (int i = 0; i < gameBtn.length; i++) 
         {
@@ -267,21 +248,16 @@ public class MemoryGame extends JFrame implements ActionListener {
                     counter = 1;
                 }
 
-                switch (counter)
-                {
-                    case 1:
-                        btnID[0] = i;   
-                        btnValue[0] = cardList.get(i); 
-                        break;
-
-                    case 2:
-                        btnID[1] = i;     
-                        btnValue[1] = cardList.get(i);
-                        break;
-                }
-            }        
+                setButtons(counter - 1, i);
+            }
         }
     } 
+
+    private void setButtons(int nCounter, int nIndex)
+    {
+        btnID[nCounter] = nIndex;   
+        btnValue[nCounter] = cardList.get(nIndex);
+    }
 
     public synchronized static MemoryGame getInstance() {
         if (singletonMemoryGame == null) {
