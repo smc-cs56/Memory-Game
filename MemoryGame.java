@@ -17,7 +17,7 @@ public class MemoryGame extends JFrame implements ActionListener {
     private static final int WINDOW_WIDTH = 500; // pixels
     private static final int WINDOW_HEIGHT = 500; // pixels
     private JButton exitBtn, replayBtn, solveBtn;  
-    private ImageIcon defaultButtonIcon = createImageIcon("500.png");
+    private ImageIcon defaultButtonIcon = createImageIcon("assets/images/500.png");
 
     private ArrayList<JButton> gameButtonsList = new ArrayList<JButton>();
 
@@ -245,7 +245,7 @@ public class MemoryGame extends JFrame implements ActionListener {
                 Hit++;
                 setStatusText(statusText.Hit, Hit);
 
-                ImageIcon CardImage = createImageIcon("cards/" + cardList.get(i) + ".png");
+                ImageIcon CardImage = createImageIcon("assets/images/cards/" + cardList.get(i) + ".png");
                 gameBtn[i].setIcon(CardImage);
 
                 counter++;
