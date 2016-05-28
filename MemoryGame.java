@@ -20,19 +20,18 @@ public class MemoryGame extends JFrame implements ActionListener {
     private JButton exitBtn, replayBtn, solveBtn;  
     private ImageIcon defaultButtonIcon = createImageIcon("assets/images/500.png");
 
-    private ArrayList<JButton> gameButtonsList = new ArrayList<JButton>();
-
     private final int totalUniqueCards = 8;
 
     private final int totalCards = totalUniqueCards * 2;
     private final int gridLayout = totalUniqueCards / 2;
 
-    private JButton[] gameBtn = new JButton[totalCards];
+    private ArrayList<JButton> gameBtn = new ArrayList<JButton>();
 
     private Map<Integer, String> cardList = new HashMap<Integer, String>();
 
     private int Hit, Miss, Matched = 0;
-    private int counter = 0;   
+    private int counter = 0;
+
     private int[] btnID = new int[2];   
     private String[] btnValue = new String[2];
 
@@ -123,19 +122,19 @@ public class MemoryGame extends JFrame implements ActionListener {
 
     private void setGameButtons(gameStatus enumGameStatus)
     {
-        for (int i = 0; i < gameBtn.length; i++) 
+        for (int nIndex = 0; nIndex < totalCards; nIndex++) 
         {
             switch (enumGameStatus)
             {
                 case New:
-                    gameBtn[i] = new JButton(defaultButtonIcon);
+                    gameBtn.add(new JButton(defaultButtonIcon));
                     break;
 
                 case Replay:
-                    gameBtn[i].setIcon(defaultButtonIcon);
+                    gameBtn.get(nIndex).setIcon(defaultButtonIcon);
                     break;
             }
-            gameBtn[i].addActionListener(this);
+            gameBtn.get(nIndex).addActionListener(this);
         }
     }
 
@@ -160,9 +159,9 @@ public class MemoryGame extends JFrame implements ActionListener {
     public void createpanels()
     {
         gamePnl.setLayout(new GridLayout(gridLayout, gridLayout)); 
-        for (int i = 0; i < gameBtn.length; i++)
+        for (int nIndex = 0; nIndex < totalCards; nIndex++)
         {            
-            gamePnl.add(gameBtn[i]);   
+            gamePnl.add(gameBtn.get(nIndex));   
         }
 
         buttonPnl.add(replayBtn);
@@ -228,25 +227,25 @@ public class MemoryGame extends JFrame implements ActionListener {
         }
         else if (e.getSource() == solveBtn)
         {
-            for (int i = 0; i < gameBtn.length; i++) 
+            for (int i = 0; i < totalCards; i++) 
             { 
                 ImageIcon CardImage = createImageIcon("assets/images/cards/" + cardList.get(i) + ".png");
-                gameBtn[i].setIcon(CardImage);
-                gameBtn[i].removeActionListener(this);
+                gameBtn.get(i).setIcon(CardImage);
+                gameBtn.get(i).removeActionListener(this);
             }
         }
 
-        for (int i = 0; i < gameBtn.length; i++)
+        for (int i = 0; i < totalCards; i++)
         {
-            if (gameBtn[i] == e.getSource())
+            if (gameBtn.get(i) == e.getSource())
             {
-                gameBtn[i].removeActionListener(this);
+                gameBtn.get(i).removeActionListener(this);
 
                 Hit++;
                 setStatusText(statusText.Hit, Hit);
 
                 ImageIcon CardImage = createImageIcon("assets/images/cards/" + cardList.get(i) + ".png");
-                gameBtn[i].setIcon(CardImage);
+                gameBtn.get(i).setIcon(CardImage);
 
                 if (Matched == totalUniqueCards - 1)
                 {
@@ -263,11 +262,11 @@ public class MemoryGame extends JFrame implements ActionListener {
                     }
                     else 
                     {
-                        gameBtn[btnID[0]].setIcon(defaultButtonIcon);
-                        gameBtn[btnID[1]].setIcon(defaultButtonIcon);
+                        gameBtn.get(btnID[0]).setIcon(defaultButtonIcon);
+                        gameBtn.get(btnID[1]).setIcon(defaultButtonIcon);
 
-                        gameBtn[btnID[0]].addActionListener(this);
-                        gameBtn[btnID[1]].addActionListener(this);
+                        gameBtn.get(btnID[0]).addActionListener(this);
+                        gameBtn.get(btnID[1]).addActionListener(this);
                         
                         Miss++;
                         setStatusText(statusText.Miss, Miss);
