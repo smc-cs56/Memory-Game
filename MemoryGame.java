@@ -1,5 +1,8 @@
 import java.util.ArrayList;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
@@ -14,7 +17,8 @@ import javax.swing.JOptionPane;
 public class MemoryGame extends JFrame implements ActionListener {  
 
     // Start - Declare variables
-    private JFrame window = new JFrame("Memory Game");
+    // why use another JFrame? I used the MemoryGame JFrame for the whole thing instead
+    //private JFrame window = new JFrame("Memory Game");
     private static final int WINDOW_WIDTH = 700; // pixels
     private static final int WINDOW_HEIGHT = 700; // pixels
     private JButton exitBtn, replayBtn, solveBtn;  
@@ -114,10 +118,14 @@ public class MemoryGame extends JFrame implements ActionListener {
 
     private void setWindow()
     {
-        window.setTitle("MemoryGame"); 
-        window.setDefaultCloseOperation(EXIT_ON_CLOSE); 
-        window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT); 
-        window.setVisible(true);  
+        //window.setTitle("MemoryGame"); 
+        //window.setDefaultCloseOperation(EXIT_ON_CLOSE); 
+        //window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT); 
+        //window.setVisible(true);  
+        this.setTitle("MemoryGame");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        this.setVisible(true);
     }
 
     private void setGameButtons(gameStatus enumGameStatus)
@@ -175,9 +183,12 @@ public class MemoryGame extends JFrame implements ActionListener {
         scorePnl.add(MissScore);
 
         scorePnl.setLayout(new GridLayout(1, 0));
-        window.add(scorePnl, BorderLayout.NORTH);
-        window.add(gamePnl, BorderLayout.CENTER);
-        window.add(buttonPnl, BorderLayout.SOUTH);
+        //window.add(scorePnl, BorderLayout.NORTH);
+        //window.add(gamePnl, BorderLayout.CENTER);
+        //window.add(buttonPnl, BorderLayout.SOUTH);
+        this.add(scorePnl, BorderLayout.NORTH);
+        this.add(gamePnl, BorderLayout.CENTER);
+        this.add(buttonPnl, BorderLayout.SOUTH);
     }
 
     public boolean sameValues() 
@@ -218,7 +229,9 @@ public class MemoryGame extends JFrame implements ActionListener {
     {
         if (e.getSource() == exitBtn)
         {
-            System.exit(0);
+            singletonMemoryGame = null;
+            this.dispose();
+            new TestMenu();
         }
         else if (e.getSource() == replayBtn)
         {
@@ -293,8 +306,8 @@ public class MemoryGame extends JFrame implements ActionListener {
         return singletonMemoryGame;
     }
     
-    public static void main(String[] args)
-    {  
-        new MemoryGame();   
-    }
+    //public static void main(String[] args)
+    //{  
+      //  new MemoryGame();   
+    //}
 }
