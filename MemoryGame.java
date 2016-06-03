@@ -71,6 +71,8 @@ public class MemoryGame extends JFrame implements ActionListener {
     private void shuffleCards(int nCardNumber)
     {
         //reset
+        Matched = 0;
+
         Hit = 0;
         setStatusText(statusText.Hit, Hit);
 
@@ -146,6 +148,7 @@ public class MemoryGame extends JFrame implements ActionListener {
                     gameBtn.get(nIndex).setIcon(defaultButtonIcon);
                     break;
             }
+            gameBtn.get(nIndex).removeActionListener(this);
             gameBtn.get(nIndex).addActionListener(this);
         }
     }
@@ -267,6 +270,7 @@ public class MemoryGame extends JFrame implements ActionListener {
                 if (Matched == totalUniqueCards - 1)
                 {
                     JOptionPane.showMessageDialog(null, "Good job!");
+
                 }
 
                 counter++;
