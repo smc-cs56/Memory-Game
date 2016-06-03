@@ -14,6 +14,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import java.sql.*;
+import java.util.Date;
+import java.text.*;
+
 public class MemoryGame extends JFrame implements ActionListener {  
 
     // Start - Declare variables
@@ -44,6 +48,8 @@ public class MemoryGame extends JFrame implements ActionListener {
     private Panel buttonPnl = new Panel();   
     private Panel scorePnl = new Panel();
 
+    private long startTime, endTime;
+
     private static MemoryGame singletonMemoryGame = null;
     // End - Declare variables
 
@@ -70,6 +76,8 @@ public class MemoryGame extends JFrame implements ActionListener {
 
     private void shuffleCards(int nCardNumber)
     {
+        startTime = System.currentTimeMillis();
+
         //reset
         Matched = 0;
 
@@ -269,8 +277,10 @@ public class MemoryGame extends JFrame implements ActionListener {
 
                 if (Matched == totalUniqueCards - 1)
                 {
-                    JOptionPane.showMessageDialog(null, "Good job!");
+                    endTime = (System.currentTimeMillis() - startTime) / 1000;
 
+                    JOptionPane.showMessageDialog(null, "Good job! " + endTime + " seconds");
+                    insertScore(Hit, endTime);
                 }
 
                 counter++;
@@ -318,4 +328,69 @@ public class MemoryGame extends JFrame implements ActionListener {
     //{  
       //  new MemoryGame();   
     //}
+
+    private void insertScore(int nScore, long duration)
+    {
+        Connection conn = null;
+        Statement stmt = null;
+
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+
+            conn = DriverManager.getConnection(SqlConfig.getHostname(), SqlConfig.getUsername(), SqlConfig.getPassword());
+
+            boolean bField = false;
+            String szFirstName = "";
+            while (!bField)
+            {
+                szFirstName = JOptionPane.showInputDialog("Please Enter First name");
+                if (!szFirstName.isEmpty())
+                {
+                    bField = true;
+                }
+            }
+
+             bField = false;
+            String szLastName  = "";
+             while (!bField)
+             {
+                szLastName = JOptionPane.showInputDialog("Please Enter Last name");
+                if (!szLastName.isEmpty())
+                {
+                   bField = true;
+                }
+             }
+
+            Date dNow = new Date( );
+            SimpleDateFormat sdFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+
+            String szDate = sdFormat.format(dNow);
+
+            stmt = conn.createStatement();
+            String szSQL = "INSERT INTO Game3 (fname, lname, date, score, duration) VALUES('" + szFirstName + "','" + szLastName + "','" + szDate + "', " + nScore + ", " + duration + ")"; 
+
+            stmt.executeUpdate(szSQL);
+        }
+        catch(SQLException se){
+         //Handle errors for JDBC
+         se.printStackTrace();
+        }catch(Exception e){
+         //Handle errors for Class.forName
+         e.printStackTrace();
+        }finally{
+         //finally block used to close resources
+         try{
+            if(stmt!=null)
+               conn.close();
+         }catch(SQLException se){
+         }// do nothing
+         try{
+            if(conn!=null)
+               conn.close();
+         }catch(SQLException se){
+            se.printStackTrace();
+         }//end finally try
+        }//end try
+    }
 }
