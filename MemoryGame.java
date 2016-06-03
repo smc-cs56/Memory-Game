@@ -70,6 +70,7 @@ public class MemoryGame extends JFrame implements ActionListener {
 
     private void shuffleCards(int nCardNumber)
     {
+        //reset
         Hit = 0;
         setStatusText(statusText.Hit, Hit);
 
@@ -77,6 +78,7 @@ public class MemoryGame extends JFrame implements ActionListener {
         setStatusText(statusText.Miss, Miss);
 
         cardList.clear();
+        //reset
 
         int nIndex = 0;
         for (int nCard = 1; nCard <= nCardNumber; nCard++)
@@ -94,6 +96,7 @@ public class MemoryGame extends JFrame implements ActionListener {
 
                 if (!cardList.containsValue(szCard))
                 {
+                    //add same card twice with different key
                     cardList.put(nIndex, szCard);
                     nIndex++;
                     
@@ -105,6 +108,7 @@ public class MemoryGame extends JFrame implements ActionListener {
             }
         }
 
+        //shuffle
         List<Map.Entry<Integer, String>> cards = new ArrayList<>(cardList.entrySet());
         Collections.shuffle(cards);
         
